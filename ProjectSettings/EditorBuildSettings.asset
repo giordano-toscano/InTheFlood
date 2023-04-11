@@ -11,6 +11,12 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/SampleScene.unity
     guid: 99c9720ab356a0642a771bea13969a05
+  - enabled: 1
+    path: Assets/Scenes/Derrota.unity
+    guid: d14190832cce974448b259a2a6cf587e
+  - enabled: 1
+    path: Assets/Scenes/Vitoria.unity
+    guid: 7a5f3c62521525c45a6e1ea14e8f8f0f
   m_configObjects:
     com.unity.xr.management.loader_settings: {fileID: 11400000, guid: 0bcf0c7f6d69db14d97020d91694cd96,
       type: 2}

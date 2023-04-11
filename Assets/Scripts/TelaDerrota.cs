@@ -5,15 +5,14 @@ using UnityEngine.SceneManagement;
 
 public class TelaDerrota : MonoBehaviour
 {
-    int rand;
     public void TentarNovamente()
     {
-        rand = Random.Range(1, 4); //Fase1-01 = 1, Fase1-02 = 2, Fase1-03 = 3
-        SceneManager.LoadScene(rand);
+        
+        SceneManager.LoadScene("SampleScene");
     }
 
     public void VoltarAoMenu()
     {
-        SceneManager.LoadScene("Menu");
+        SceneManager.LoadScene("MainMenu");
     }
 }

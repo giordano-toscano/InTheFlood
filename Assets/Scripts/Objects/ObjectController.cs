@@ -38,6 +38,8 @@ public class ObjectController : MonoBehaviour
 
     public GameObject Text;
 
+    private float emission = 0.1f;
+
     // The objects are about 1 meter in radius, so the min/max target distance are
     // set so that the objects are always within the room (which is about 5 meters
     // across).
@@ -129,9 +131,27 @@ public class ObjectController : MonoBehaviour
     /// </param>
     private void SetMaterial(bool gazedAt)
     {
-        if (InactiveMaterial != null && GazedAtMaterial != null)
+
+        //_myRenderer.material = gazedAt ? GazedAtMaterial : InactiveMaterial;
+
+        if (gazedAt)
         {
-            _myRenderer.material = gazedAt ? GazedAtMaterial : InactiveMaterial;
+            Color myColor = Color.yellow * 0.001f;
+            myColor.a = 255;
+            myColor.b = 11;
+            myColor.g = 63;
+            myColor.r = 145;
+
+            //Color baseColor = new Color(145f,63f,11f);
+            Color baseColor = Color.white;
+            Color finalColor = baseColor * Mathf.LinearToGammaSpace(emission);
+            _myRenderer.material.SetColor("_EmissionColor", finalColor);
         }
+        else
+        {
+            _myRenderer.material.SetColor("_EmissionColor", Color.clear);
+        }
+
+
     }
 }

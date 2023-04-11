@@ -4,14 +4,18 @@ using UnityEngine.SceneManagement;
 using UnityEngine;
 using TMPro;
 
-public class WaterTime : MonoBehaviour
+public class WaterTempo : MonoBehaviour
 {
     bool already;
     bool already2;
+    bool already3;
+    bool already4;
     float subiu = 0;
-    public bool protegidoEscada;
+    public static bool protegidoEscada;
     public bool protegidoCilindro;
-    public int cont = 0;
+    float inicial = -3.54f;
+    float final = 0.4f;
+    int cont = 3;
     float speed = 0.3f;
     private float timeSec;
     private float timeMin;
@@ -22,10 +26,12 @@ public class WaterTime : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        timeMin = 5f;
+        timeMin = 14f;
         Time.timeScale = 1f;
         already = false;
         already2 = false;
+        already3 = false;
+        already4 = false;
         protegidoEscada = false;
         protegidoCilindro = false;
     }
@@ -50,35 +56,20 @@ public class WaterTime : MonoBehaviour
             {
                 sec_txt.text = ":0" + timeSec.ToString("F0");
                 min_txt.text = timeMin.ToString("F0");
-                if ((timeMin == 3 || timeMin == 1) && timeSec <= 5f && timeSec >= 4)
+                if ((timeMin == 11 || timeMin == 8 || timeMin == 5 || timeMin == 2) && timeSec <= 5f && timeSec >= 4)
                 {
                     gameObject.GetComponent<AudioSource>().Play();
                     sec_txt.text = ":0" + timeSec.ToString("F0");
                     min_txt.text = timeMin.ToString("F0");
                 }
             }
-            else if (timeMin < 3f && subiu < 10 && already == false)
+            else if (timeMin < 11f && subiu < 10 && already == false)
             {
-                if (gameObject.transform.position.y == -1.0f)
-                {
-                    subiu += Time.deltaTime;
-                    sec_txt.text = ":" + timeSec.ToString("F0");
-                    min_txt.text = timeMin.ToString("F0");
-                    if (subiu >= 2 && protegidoEscada == false && protegidoCilindro == false)
-                    {
-                        fimFase = true;
-                    }
-                }
-                else
-                {
-                    WaterUP();
-                    sec_txt.text = ":" + timeSec.ToString("F0");
-                    min_txt.text = timeMin.ToString("F0");
-                }
+                subiu = WaterControl();
             }
             else if (subiu >= 10f && already == false)
             {
-                if (gameObject.transform.position.y != -3.1f)
+                if (gameObject.transform.position.y != inicial)
                 {
                     WaterDOWN();
                     sec_txt.text = ":" + timeSec.ToString("F0");
@@ -96,28 +87,13 @@ public class WaterTime : MonoBehaviour
                     subiu = 0;
                 }
             }
-            else if (timeMin < 1f && subiu < 10 && already2 == false)
+            else if (timeMin < 8f && subiu < 10 && already2 == false)
             {
-                if (gameObject.transform.position.y == -1.0f)
-                {
-                    subiu += Time.deltaTime;
-                    sec_txt.text = ":" + timeSec.ToString("F0");
-                    min_txt.text = timeMin.ToString("F0");
-                    if (subiu >= 2 && protegidoEscada == false && protegidoCilindro == false)
-                    {
-                        fimFase = true;
-                    }
-                }
-                else
-                {
-                    WaterUP();
-                    sec_txt.text = ":" + timeSec.ToString("F0");
-                    min_txt.text = timeMin.ToString("F0");
-                }
+                subiu = WaterControl();
             }
             else if (subiu >= 10f && already2 == false)
             {
-                if (gameObject.transform.position.y != -3.1f)
+                if (gameObject.transform.position.y != inicial)
                 {
                     WaterDOWN();
                     sec_txt.text = ":" + timeSec.ToString("F0");
@@ -132,6 +108,54 @@ public class WaterTime : MonoBehaviour
                     }
                     gameObject.GetComponent<AudioSource>().Play();
                     already2 = true;
+                    subiu = 0;
+                }
+            }
+            else if (timeMin < 5f && subiu < 10 && already3 == false)
+            {
+                subiu = WaterControl();
+            }
+            else if (subiu >= 10f && already3 == false)
+            {
+                if (gameObject.transform.position.y != inicial)
+                {
+                    WaterDOWN();
+                    sec_txt.text = ":" + timeSec.ToString("F0");
+                    min_txt.text = timeMin.ToString("F0");
+                }
+                else
+                {
+                    if (protegidoCilindro == true)
+                    {
+                        protegidoCilindro = false;
+                        //Destroy GameObject Cilindro e muda de cor o simbolo
+                    }
+                    gameObject.GetComponent<AudioSource>().Play();
+                    already3 = true;
+                    subiu = 0;
+                }
+            }
+            else if (timeMin < 2f && subiu < 10 && already4 == false)
+            {
+                subiu = WaterControl();
+            }
+            else if (subiu >= 10f && already4 == false)
+            {
+                if (gameObject.transform.position.y != inicial)
+                {
+                    WaterDOWN();
+                    sec_txt.text = ":" + timeSec.ToString("F0");
+                    min_txt.text = timeMin.ToString("F0");
+                }
+                else
+                {
+                    if (protegidoCilindro == true)
+                    {
+                        protegidoCilindro = false;
+                        //Destroy GameObject Cilindro e muda de cor o simbolo
+                    }
+                    gameObject.GetComponent<AudioSource>().Play();
+                    already4 = true;
                     subiu = 0;
                 }
             }
@@ -164,12 +188,32 @@ public class WaterTime : MonoBehaviour
 
     void WaterUP()
     {
-        transform.position = Vector3.MoveTowards(transform.position, new Vector3(0, -1.0f, 0), speed * Time.deltaTime);
+        transform.position = Vector3.MoveTowards(transform.position, new Vector3(140.74f, final, -1.49f), speed * Time.deltaTime);
     }
 
     void WaterDOWN()
     {
-        transform.position = Vector3.MoveTowards(transform.position, new Vector3(0, -3.1f, 0), speed * Time.deltaTime);
+        transform.position = Vector3.MoveTowards(transform.position, new Vector3(140.74f, inicial, -1.49f), speed * Time.deltaTime);
+    }
+
+    float WaterControl()
+    {
+        if (gameObject.transform.position.y == final)
+        {
+            subiu += Time.deltaTime;
+            sec_txt.text = ":" + timeSec.ToString("F0");
+            min_txt.text = timeMin.ToString("F0");
+            if (subiu >= 2 && protegidoEscada == false && protegidoCilindro == false)
+            {
+                fimFase = true;
+            }
+        }
+        else
+        {
+            WaterUP();
+            sec_txt.text = ":" + timeSec.ToString("F0");
+            min_txt.text = timeMin.ToString("F0");
+        }
+        return subiu;
     }
 }
-
